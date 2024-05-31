@@ -1,79 +1,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-float celtofah(float c), celtokel(float c), fahtokel(float f), fahtocel(float f), keltofah(float k), keltocel(float k);
+#define CELSIUS_TO_FAHRENHEIT(c) ((c * 9.0 / 5.0) + 32.0)
+#define CELSIUS_TO_KELVIN(c) (c + 273.15)
+#define FAHRENHEIT_TO_KELVIN(f) ((f - 32.0) * 5.0 / 9.0 + 273.15)
+#define FAHRENHEIT_TO_CELSIUS(f) ((f - 32.0) * 5.0 / 9.0)
+#define KELVIN_TO_FAHRENHEIT(k) ((k - 273.15) * 9.0 / 5.0 + 32.0)
+#define KELVIN_TO_CELSIUS(k) (k - 273.15)
 
 int main(int argc, char *argv[]) {
-    if (argc < 3) {
-        printf("Please specify the conversion and define a number.\n-cf: Celsius to Fahrenheit\n-ck: Celsius to Kelvin\n-fk: Fahrenheit to Kelvin\n-fc: Fahrenheit to Celsius\n-kf: Kelvin to Fahrenheit\n-kc: Kelvin to Celsius\n\n");
+  if (argc < 3) {
+    printf("Usage: <conversion> <number>\n");
+    printf("  -cf: Celsius to Fahrenheit\n");
+    printf("  -ck: Celsius to Kelvin\n");
+    printf("  -fk: Fahrenheit to Kelvin\n");
+    printf("  -fc: Fahrenheit to Celsius\n");
+    printf("  -kf: Kelvin to Fahrenheit\n");
+    printf("  -kc: Kelvin to Celsius\n");
+    return 1;
+  }
+
+  char conversion = argv[1][1];
+  float value = atof(argv[2]);
+
+  float result;
+  switch (conversion) {
+    case 'c':
+      if (argv[1][2] == 'f') {
+        result = CELSIUS_TO_FAHRENHEIT(value);
+      } else if (argv[1][2] == 'k') {
+        result = CELSIUS_TO_KELVIN(value);
+      } else {
+        printf("Invalid conversion type.\n");
         return 1;
-    } else {
-        char *input = argv[1];
-        if (input[0] != '-') {
-            printf("Invalid specification of conversion. Please specify.\n-cf: Celsius to Fahrenheit\n-ck: Celsius to Kelvin\n-fk: Fahrenheit to Kelvin\n-fc: Fahrenheit to Celsius\n-kf: Kelvin to Fahrenheit\n-kc: Kelvin to Celsius\n\n");
-            
-            return 2;
-        } else {
-            if (input[1] == 'c'){
-                if (input[2] == 'f'){
-                    printf("converted value: %0.2lf\n", celtofah(atof(argv[2])));
-                } else if (input[2] == 'k'){
-                    printf("converted value: %0.2lf\n", celtokel(atof(argv[2])));
-                } else {
-                    printf("Invalid specification of conversion. Please specify.\n-cf: Celsius to Fahrenheit\n-ck: Celsius to Kelvin\n-fk: Fahrenheit to Kelvin\n-fc: Fahrenheit to Celsius\n-kf: Kelvin to Fahrenheit\n-kc: Kelvin to Celsius\n\n");
-                    
-                    return 2;
-                }
-            } else if (input[1] == 'f'){
-                if (input[2] == 'c'){
-                    printf("converted value: %0.2lf\n", fahtocel(atof(argv[2])));
-                } else if (input[2] == 'k'){
-                    printf("converted value: %0.2lf\n", fahtokel(atof(argv[2])));
-                } else {
-                    printf("Invalid specification of conversion. Please specify.\n-cf: Celsius to Fahrenheit\n-ck: Celsius to Kelvin\n-fk: Fahrenheit to Kelvin\n-fc: Fahrenheit to Celsius\n-kf: Kelvin to Fahrenheit\n-kc: Kelvin to Celsius\n\n");
-                    
-                    return 2;
-                }
-            } else  if (input[1] == 'k'){
-                if (input[2] == 'c'){
-                    printf("converted value: %0.2lf\n", keltocel(atof(argv[2])));
-                } else if (input[2] == 'f'){
-                    printf("converted value: %0.2lf\n", keltofah(atof(argv[2])));
-                } else {
-                    printf("Invalid specification of conversion. Please specify.\n-cf: Celsius to Fahrenheit\n-ck: Celsius to Kelvin\n-fk: Fahrenheit to Kelvin\n-fc: Fahrenheit to Celsius\n-kf: Kelvin to Fahrenheit\n-kc: Kelvin to Celsius\n\n");
-                    
-                    return 2;
-                }
-            } else {
-                printf("Invalid specification of conversion. Please specify.\n-cf: Celsius to Fahrenheit\n-ck: Celsius to Kelvin\n-fk: Fahrenheit to Kelvin\n-fc: Fahrenheit to Celsius\n-kf: Kelvin to Fahrenheit\n-kc: Kelvin to Celsius\n\n");
-                
-                return 2;
-            }
-        }
-        
-    }
-}
+      }
+      break;
+    case 'f':
+      if (argv[1][2] == 'c') {
+        result = FAHRENHEIT_TO_CELSIUS(value);
+      } else if (argv[1][2] == 'k') {
+        result = FAHRENHEIT_TO_KELVIN(value);
+      } else {
+        printf("Invalid conversion type.\n");
+        return 1;
+      }
+      break;
+    case 'k':
+      if (argv[1][2] == 'c') {
+        result = KELVIN_TO_CELSIUS(value);
+      } else if (argv[1][2] == 'f') {
+        result = KELVIN_TO_FAHRENHEIT(value);
+      } else {
+        printf("Invalid conversion type.\n");
+        return 1;
+      }
+      break;
+    default:
+      printf("Invalid conversion type.\n");
+      return 1;
+  }
 
-float celtofah(float c) {
-    return (c * 9/5) + 32;
-}
-
-float celtokel(float c) {
-    return c + 273.15;
-}
-
-float fahtokel(float f) {
-    return (f - 32) * 5/9 + 273.15;
-}
-
-float fahtocel(float f) {
-    return (f - 32) * 5/9;
-}
-
-float keltofah(float k) {
-    return (k - 273.15) * 9/5 + 32;
-}
-
-float keltocel(float k) {
-    return k - 273.15;
+  printf("Converted value: %.2f\n", result);
+  return 0;
 }
